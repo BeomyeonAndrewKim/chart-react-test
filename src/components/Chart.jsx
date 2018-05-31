@@ -1,15 +1,26 @@
 import React from 'react';
 import highcharts from 'highcharts/highstock';
 import HighChartsReact from 'highcharts-react-official';
+import TradingViewWidget from 'react-tradingview-widget';
+import styled from 'styled-components';
 
- const Chart = (props) => {
+const TradingViewWidgetWrapper = styled.div`
+  width:100%;
+  height: 453px;
+`
+
+const TradingViewWidgetTitle = styled.p`
+  font-size: 1.5rem;
+`
+
+const Chart = props => {
         const options = {
             rangeSelector: {
                 selected: 1
               },
           
               title: {
-                text: 'AAPL Historical'
+                text: `${props.currencyPair} Historical_HIGHCHART`
               },
           
               yAxis: [{
@@ -67,6 +78,21 @@ import HighChartsReact from 'highcharts-react-official';
                     constructorType={'stockChart'}
                     options={options}
                 />
+                <TradingViewWidgetWrapper>
+                  <TradingViewWidgetTitle>XRPKRW(KORBIT)_TradingView</TradingViewWidgetTitle>
+                  <TradingViewWidget
+                      autosize={true}
+                      symbol="BITHUMB:ICXKRW"
+                      interval="1"
+                      timezone="Asia/Seoul"
+                      theme="Dark"
+                      style="1"
+                      locale="kr"
+                      toolbar_bg="#f1f3f6"
+                      enable_publishing={false}
+                      hide_side_toolbar={false}
+                  />
+                </TradingViewWidgetWrapper>
             </React.Fragment>
         );
     }
