@@ -1,19 +1,66 @@
 import React, { Component } from 'react';
 import Chart from '../components/Chart'
-// import axios from 'axios'
+import axios from 'axios'
 import data from '../sample.json'
 
-export default class ChartContainer extends Component {
-    state = {
-        ohlc: [],
-        volume: [],
-        groupingUnits: []
-    };
 
+
+export default class ChartContainer extends Component {
+    constructor(){
+        super();
+
+        this.state = {
+            ohlc: [],
+            volume: [],
+            groupingUnits: []
+        };
+    
+        this.currencyPair = null;
+    }
+
+   
     getData = async () => {
+
+        //CoinoneAPI
         // const coinoneAPI = await axios.get('https://api.coinone.co.kr/ticker_utc?currency=xrp');
         // console.log(coinoneAPI);
 
+        //Cryptocompare API
+        
+
+
+        //Poloniex API
+        this.currencyPair = 'USDT_ETH'; 
+        const start = 1410158341, period = 14400;
+
+        let poloniexAPI;
+
+        await axios.get(`https://poloniex.com/public?command=returnChartData&currencyPair=${this.currencyPair}&start=${start}&end=9999999999&period=${period}`,{ timeout: 15000 })
+                .then(response => {
+                    poloniexAPI = response.data;
+                });
+
+        let ohlc2 = [],
+            volume2 = [],
+            data2Length = poloniexAPI.length;
+            
+        for(let i = 0; i < data2Length; i++) {
+            ohlc2.push([
+                poloniexAPI[i].date*1000,
+                poloniexAPI[i].open,
+                poloniexAPI[i].high,
+                poloniexAPI[i].low,
+                poloniexAPI[i].close
+            ]);
+
+            volume2.push([
+                poloniexAPI[i].date*1000,
+                poloniexAPI[i].volume
+            ])
+        }
+        
+        
+        //sample.json
         let ohlc = [],
             volume = [],
             dataLength = data.length,
@@ -45,10 +92,11 @@ export default class ChartContainer extends Component {
         };
 
         this.setState({
-            ohlc: ohlc,
-            volume: volume,
+            ohlc: ohlc2,
+            volume: volume2,
             groupingUnits: groupingUnits,
         });
+
     }
     
     componentDidMount() {
@@ -56,10 +104,16 @@ export default class ChartContainer extends Component {
     }
 
     render() {
-        console.log(this.state);
         return (
             <div>
-                { this.state.ohlc.length ? <Chart {...this.state}/> : <div>Loading...</div> }
+                { 
+                    this.state.ohlc.length 
+                        ? <Chart 
+                            {...this.state}
+                            currencyPair={this.currencyPair}
+                            /> 
+                        : <div>Loading...</div> 
+                }
             </div>
         );
     }
