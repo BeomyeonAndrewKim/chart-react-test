@@ -21,15 +21,15 @@ export default class ChartContainer extends Component {
    
     getData = async () => {
 
-        //CoinoneAPI
+        // CoinoneAPI
         // const coinoneAPI = await axios.get('https://api.coinone.co.kr/ticker_utc?currency=xrp');
         // console.log(coinoneAPI);
 
         //Cryptocompare API
-        
 
 
-        //Poloniex API
+
+        // Poloniex API
         this.currencyPair = 'USDT_ETH'; 
         const start = 1410158341, period = 14400;
 
@@ -60,7 +60,7 @@ export default class ChartContainer extends Component {
         }
         
         
-        //sample.json
+        // sample.json
         let ohlc = [],
             volume = [],
             dataLength = data.length,
@@ -99,8 +99,12 @@ export default class ChartContainer extends Component {
 
     }
     
+    static getDerivedStateFromProps(props, state){
+        console.log(props,state);
+    }
+
     componentDidMount() {
-        this.getData()
+        this.getData();
     }
 
     render() {

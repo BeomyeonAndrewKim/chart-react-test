@@ -1,8 +1,13 @@
 import React from 'react';
-import highcharts from 'highcharts/highstock';
+import highstock from 'highcharts/highstock';
 import HighChartsReact from 'highcharts-react-official';
 import TradingViewWidget from 'react-tradingview-widget';
 import styled from 'styled-components';
+// import annotations from 'highcharts/modules/annotations';
+import annotations from 'highcharts-annotations';
+// import 'highcharts/css/themes/dark-unica.css';
+
+annotations(highstock);
 
 const TradingViewWidgetWrapper = styled.div`
   width:100%;
@@ -15,7 +20,7 @@ const TradingViewWidgetTitle = styled.p`
 
 const Chart = props => {
         const options = {
-            rangeSelector: {
+              rangeSelector: {
                 selected: 1
               },
           
@@ -74,12 +79,12 @@ const Chart = props => {
         return (
             <React.Fragment>
                 <HighChartsReact
-                    highcharts={highcharts}
+                    highcharts={highstock}
                     constructorType={'stockChart'}
                     options={options}
                 />
                 <TradingViewWidgetWrapper>
-                  <TradingViewWidgetTitle>XRPKRW(KORBIT)_TradingView</TradingViewWidgetTitle>
+                  <TradingViewWidgetTitle>ICXKRW(BITHUMB)_TradingView</TradingViewWidgetTitle>
                   <TradingViewWidget
                       autosize={true}
                       symbol="BITHUMB:ICXKRW"
